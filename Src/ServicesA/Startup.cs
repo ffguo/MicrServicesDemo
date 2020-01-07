@@ -30,6 +30,16 @@ namespace ServicesA
             services.AddControllers();
             services.AddHealthChecks();
             services.AddConsul();
+            services.AddAuthentication("Bearer")
+                    .AddIdentityServerAuthentication(options =>
+                    {
+                        //设置令牌的发布者
+                        options.Authority = "http://localhost:5000";
+                        //设置Https
+                        options.RequireHttpsMetadata = false;
+                        //需要认证的api资源名称
+                        options.ApiName = "ServicesA";
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +55,7 @@ namespace ServicesA
             {
                 return async context =>
                 {
-                    if (context.Request.Path.HasValue && context.Request.Path.Value.ToLower().EndsWith(consulOptions.Value.HealthCheck))
+                    if (context.Request.Path.HasValue && context.Request.Path.Value.ToLower().EndsWith(consulOptions.Value.HealthCheck.ToLower()))
                     {
                         await context.Response.WriteAsync("OK");
                     }
@@ -56,6 +66,7 @@ namespace ServicesA
                 };
             });
             //app.UseHealthChecks(consulOptions.Value.HealthCheck);
+            app.UseAuthentication();
             app.UseConsul();
             app.UseRouting();
 
