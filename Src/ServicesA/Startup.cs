@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HttpReports;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +41,7 @@ namespace ServicesA
                         //需要认证的api资源名称
                         options.ApiName = "ServicesA";
                     });
+            services.AddHttpReportsMiddleware(WebType.API, DBType.SqlServer);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +53,7 @@ namespace ServicesA
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpReportsMiddleware();
             app.Use(next =>
             {
                 return async context =>
