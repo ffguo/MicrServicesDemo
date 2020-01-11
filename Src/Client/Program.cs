@@ -1,4 +1,5 @@
-﻿using Core.ServiceDiscovery;
+﻿using Core;
+using Core.ServiceDiscovery;
 using Core.ServiceDiscovery.LoadBalancer;
 using Core.Strategy;
 using System;
@@ -11,6 +12,9 @@ namespace Client
     {
         static void Main(string[] args)
         {
+            var snowId = new SnowflakeId(1, 1);
+            var id = snowId.NextId();
+
             var serviceProvider = new ConsulServiceProvider(new Uri("http://127.0.0.1:8500"));
             var myServiceA = serviceProvider.CreateServiceBuilder(builder =>
             {
