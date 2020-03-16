@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,11 +32,11 @@ namespace ServicesA
             services.AddControllers();
             services.AddHealthChecks();
             services.AddConsul();
-            services.AddAuthentication("Bearer")
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddIdentityServerAuthentication(options =>
                     {
                         //设置令牌的发布者
-                        options.Authority = "http://localhost:5000";
+                        options.Authority = ProjectConfig.IdentityServer.Url;
                         //设置Https
                         options.RequireHttpsMetadata = false;
                         //需要认证的api资源名称

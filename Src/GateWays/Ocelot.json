@@ -1,0 +1,34 @@
+{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/api/student",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      },
+      "UpstreamPathTemplate": "/student",
+      "UpstreamHttpMethod": [ "Get", "Patch" ],
+      "ReRoutesCaseSensitive": false,
+      "ServiceName": "ServicesA",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Demo",
+        "AllowedScopes": [ "ServicesA" ]
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    // 使用Consul服务治理
+    "ServiceDiscoveryProvider": {
+      "Host": "127.0.0.1",
+      "Port": 8500,
+      "Type": "Consul",
+      //"ConfigurationKey": "MyServiceA" //存储在Consul上的Key
+    }
+  }
+}
