@@ -21,9 +21,12 @@ namespace IdentityServers
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddInMemoryClients(TestConfig.GetClients())
+                //.AddClientStore<ClientStore>()
                 .AddInMemoryApiResources(TestConfig.GetApiResources())
                 .AddResourceOwnerValidator<ResourceOwnerValidator>()
-                .AddTestUsers(TestConfig.GetTestUsers());
+                .AddExtensionGrantValidator<WeiXinOpenGrantValidator>()
+                //.AddTestUsers(TestConfig.GetTestUsers())
+                .AddProfileService<UserProfileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -32,7 +32,7 @@ namespace GateWays
                     //设置Https
                     options.RequireHttpsMetadata = false;
                     //需要认证的api资源名称
-                    options.ApiName = "ServicesA";
+                    options.ApiName = ProjectConfig.ServicesAApi.ApiName;
                 });
         }
 

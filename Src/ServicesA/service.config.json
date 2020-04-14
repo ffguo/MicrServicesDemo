@@ -1,5 +1,5 @@
 {
   "ConsulAddress": "http://127.0.0.1:8500",
-  "ServiceName": "ServicesA",
+  "ServiceName": "services_a_api",
   "HealthCheck": "/Health"
 }

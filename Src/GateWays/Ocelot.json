@@ -15,10 +15,10 @@
       "UpstreamPathTemplate": "/student",
       "UpstreamHttpMethod": [ "Get", "Patch" ],
       "ReRoutesCaseSensitive": false,
-      "ServiceName": "ServicesA",
+      "ServiceName": "services_a_api",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Demo",
-        "AllowedScopes": [ "ServicesA" ]
+        "AllowedScopes": [ "services_a_api" ]
       }
     }
   ],

@@ -1,5 +1,9 @@
-﻿using IdentityServer4.Models;
+﻿using Core;
+using IdentityModel;
+using IdentityServer4;
+using IdentityServer4.Models;
 using IdentityServer4.Test;
+using IdentityServers.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +19,22 @@ namespace IdentityServers
             {
                 new Client
                 {
-                    ClientId = "Test",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    ClientId = ProjectConfig.ServicesAApi.ClientId,
+                    AllowedGrantTypes = new List<string>
+                    {
+                        GrantTypes.ResourceOwnerPassword.FirstOrDefault(),
+                        GrantTypeConstants.ResourceWeixinOpen
+                    },
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new Secret(ProjectConfig.ServicesAApi.Secret.Sha256())
                     },
-                    AllowedScopes = { "ServicesA" }
+                    AllowOfflineAccess = true,
+                    AllowedScopes = 
+                    { 
+                        ProjectConfig.ServicesAApi.ApiName,
+                        IdentityServerConstants.StandardScopes.OfflineAccess
+                    }
                 }
             };
         }
@@ -30,7 +43,7 @@ namespace IdentityServers
         {
             return new List<ApiResource>
             {
-                new ApiResource("ServicesA", "My First API")
+                new ApiResource(ProjectConfig.ServicesAApi.ApiName, ProjectConfig.ServicesAApi.ApiName, new List<string>(){ JwtClaimTypes.Role })
             };
         }
 
@@ -43,6 +56,19 @@ namespace IdentityServers
                     SubjectId = "1",
                     Username = "ffg",
                     Password = "123"
+                }
+            };
+        }
+
+        public static List<WeChatOpenIdModel> GetWeiXinOpenIdTestUsers()
+        {
+            return new List<WeChatOpenIdModel>
+            {
+                new WeChatOpenIdModel
+                {
+                    OpenId = "openid",
+                    UnionId = "unionid",
+                    UserName = "ffg"
                 }
             };
         }

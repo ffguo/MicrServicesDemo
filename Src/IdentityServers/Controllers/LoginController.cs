@@ -1,4 +1,6 @@
-﻿using IdentityServers.Models;
+﻿using Core;
+using IdentityModel;
+using IdentityServers.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,8 +24,11 @@ namespace IdentityServers.Controllers
             };
             var claimIdentity = new ClaimsIdentity();
             claimIdentity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            claimIdentity.AddClaim(new Claim(EnumUserClaim.DisplayName, user.UserName));
+            claimIdentity.AddClaim(new Claim(EnumUserClaim.UserId, user.SubjectId));
+            claimIdentity.AddClaim(new Claim(JwtClaimTypes.Role, user.Role.ToString()));
             var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
-            await HttpContext.SignInAsync(user.Id.ToString(), claimsPrincipal, props);
+            await HttpContext.SignInAsync(user.SubjectId.ToString(), claimsPrincipal, props);
             return View();
         }
     }
